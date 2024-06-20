@@ -9,6 +9,7 @@ const EmployeeSchema = new mongoose.Schema({
     enum: ["admin", "employee", "manager"],
     default: "employee",
   },
+ 
 });
 
 const Employee = mongoose.model("Employee", EmployeeSchema);

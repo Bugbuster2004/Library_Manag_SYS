@@ -6,6 +6,8 @@ const bookroute = require("./routes/bookroutes");
 const getbook = require("./routes/getbookroute");
 const update = require("./routes/updatebook");
 const del = require("./routes/deletebook");
+const jwt = require("jsonwebtoken")
+const jwtkey = "lms"
 const EmployeeModel = require("./models/Employeemodel");
 
 app.use(express.json());
@@ -21,17 +23,24 @@ app.use("/api", del);
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
-    await EmployeeModel.findOne({ email }).then((user) => {
-      if (user) {
-        if (password === password) {
-          res.status(200).json({ message: "User login success", user });
-        } else {
-          res.status(401).json({ message: "Email Or Password is incorrect" });
-        }
+    const user = await EmployeeModel.findOne({ email });
+    if (user) {
+      if (user.password === password) {
+        jwt.sign({ user }, jwtkey, { expiresIn: "60s" }, (err, token) => {
+          if (err) {
+            return res.send({ result: "user not found from jwt sign" });
+          }
+          res.status(200).send({ user, auth: token });
+        });
+      } else {
+        res.status(401).json({ message: "Email Or Password is incorrect" });
       }
-    });
+    } else {
+      res.json("User not found create an account!");
+    }
   } catch (error) {
     console.log(error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
@@ -39,17 +48,42 @@ app.post("/login", async (req, res) => {
 app.post("/register", async (req, res) => {
   try {
     const newUser = await EmployeeModel.create(req.body);
-    res
-      .status(201)
-      .json({ message: "User created successfully", user: newUser });
+    jwt.sign({user : newUser}, jwtkey,{ expiresIn: "60s" }, (err, token)=>{
+      if(err){
+        return res. send({result:"user not found from token again this is register"})
+      }
+      //send the data and the token simultaneously
+      return res.status(201).send({message:"User create ssuccesfully",user: newUser, auth:token})
+     
+    })
   } catch (error) {
     res
       .status(500)
       .json({ error: "Failed to create user", message: error.message });
   }
 });
+app.get("/dashboard", verifytoken, (req, res) => {
+  res.json({ message: "Welcome to the dashboard!" });
+});
 
-// Route Handler for Checking User Existence
+function verifytoken(req, res, next) {
+  let token = req.headers["authorization"];
+  if (token) {
+    token = token.split(" ")[1]; // Split and get the token part
+    jwt.verify(token, jwtkey, (err, valid) => {
+      if (err) {
+        res.status(401).send({ result: "You are not authorized" });
+      } else {
+        next();
+      }
+    });
+  } else {
+    res.status(403).send({ result: "Please add token with header" });
+  }
+}
+
+
+// Route Handler for Checking User Existence 
 app.get("/checkuser", async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -66,6 +100,8 @@ app.get("/checkuser", async (req, res) => {
     });
   }
 });
+
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
