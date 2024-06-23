@@ -16,11 +16,14 @@ export default {
     },
 
     extend: {
+      
       backgroundImage: {
         'blue-black-gradient': 'linear-gradient(to bottom, #0d1b2a, #1f3550)'
       },
     },
   },
   plugins: [],
+
 }
+
 

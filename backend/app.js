@@ -9,7 +9,8 @@ const del = require("./routes/deletebook");
 const jwt = require("jsonwebtoken")
 const jwtkey = "lms"
 const EmployeeModel = require("./models/Employeemodel");
-
+const cors = require("cors")
+app.use(cors())
 app.use(express.json());
 //create
 app.use("/api", bookroute);
