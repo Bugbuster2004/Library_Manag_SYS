@@ -4,6 +4,7 @@ import Home from './components/Home'
 import Navbar from './components/Navbar'
 import Addbooks from "./Pages/Addbooks"
 import Login from './Pages/Login'
+import Register from './Pages/Register'
 import Viewbooks from "./Pages/Viewbooks"
 
 import {
@@ -21,6 +22,7 @@ function App() {
        <Route  path='/addbooks' element={<Addbooks/>}></Route>
        <Route  path='/viewbooks' element={<Viewbooks/>}></Route>
        <Route  path='/login' element={<Login/>}></Route>
+       <Route  path='/register' element={<Register/>}></Route>
     </Routes>
    </Router>
   )

@@ -1,6 +1,6 @@
 import React from "react";
 import coffeeImage from "../assets/images/coffee-8595772_1280.jpg"; // Import image as a static asset
-import book from "../assets/images/book1.png"; // Import book image
+import book from "../assets/images/book1.png"; 
 
 function Home() {
   return (
