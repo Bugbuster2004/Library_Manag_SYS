@@ -1,14 +1,14 @@
 const router = require("express").Router();
 const getbookmodel = require("../models/bookmodel");
+// const verifytoken = require('../app').verifytoken;
 
 router.get("/getbooks", async (req, res) => {
-  let books;
-  // const id = req.params.id;
   try {
-    books = await getbookmodel.find();
-    res.status(200).json({ message: books });
+    const books = await getbookmodel.find(); 
+    res.status(200).json({ message: books }); 
   } catch (error) {
-    console.log(error);
+    console.log(error); 
+    res.status(500).json({ message: "Error retrieving books" }); 
   }
 });
 

@@ -4,11 +4,7 @@ const EmployeeSchema = new mongoose.Schema({
   name: String,
   email: String,
   password: String,
-  role: {
-    type: String,
-    enum: ["admin", "employee", "manager"],
-    default: "employee",
-  },
+ 
  
 });
 

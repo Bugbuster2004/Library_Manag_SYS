@@ -13,13 +13,13 @@ const cors = require("cors")
 app.use(cors())
 app.use(express.json());
 //create
-app.use("/api", bookroute);
+app.use("/api",verifytoken, bookroute);
 //read
-app.use("/api", getbook);
+app.use("/api",verifytoken, getbook);
 //update
-app.use("/api", update);
+app.use("/api",verifytoken, update);
 //delete
-app.use("/api", del);
+app.use("/api",verifytoken, del);
 //login handler
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
@@ -47,7 +47,13 @@ app.post("/login", async (req, res) => {
 
 // Route Handler for Creating User
 app.post("/register", async (req, res) => {
+  const { email } = req.body;
   try {
+    const existingUser = await EmployeeModel.findOne({ email });
+    if (existingUser) {
+      console.log(existingUser)
+      return res.status(400).json({ message: "Email already exists. Please choose a different email address." });
+    }
     const newUser = await EmployeeModel.create(req.body);
     jwt.sign({user : newUser}, jwtkey,{ expiresIn: "60s" }, (err, token)=>{
       if(err){
@@ -107,3 +113,4 @@ app.get("/checkuser", async (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
+// module.exports.verifytoken = verifytoken;
