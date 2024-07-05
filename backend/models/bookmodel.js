@@ -27,6 +27,10 @@ const bookSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  userId: {
+    type: String,  // Adjust the type according to your userId type (e.g., String or mongoose.Schema.Types.ObjectId)
+    required: true,
+  },
 });
 
 const Book = mongoose.model("Book", bookSchema);

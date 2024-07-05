@@ -23,10 +23,17 @@ app.use("/api",verifytoken, del);
 //login handler
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
+  const emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$|^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!emailPattern.test(email)) {
+    return res.status(400).json({ message: "Invalid email format. Email should be a valid @gmail.com or any other @domain.com" });
+  }
+
   try {
     const user = await EmployeeModel.findOne({ email });
     if (user) {
       if (user.password === password) {
+        console.log(user.password)
+        console.log(password)
         jwt.sign({ user }, jwtkey, { expiresIn: "60s" }, (err, token) => {
           if (err) {
             return res.send({ result: "user not found from jwt sign" });
@@ -48,6 +55,10 @@ app.post("/login", async (req, res) => {
 // Route Handler for Creating User
 app.post("/register", async (req, res) => {
   const { email } = req.body;
+  const emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$|^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!emailPattern.test(email)) {
+    return res.status(400).json({ message: "Invalid email format. Email should be a valid @gmail.com or any other @domain.com" });
+  }
   try {
     const existingUser = await EmployeeModel.findOne({ email });
     if (existingUser) {
