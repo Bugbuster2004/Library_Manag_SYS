@@ -12,7 +12,7 @@ function Update() {
   useEffect(() => {
     if (!book || !book._id) {
       console.error("Invalid book data", book);
-      navigate("/viewbooks"); // Redirect to view books if book data is invalid
+      navigate("/viewbooks"); // Redirect to view books 
     }
   }, [book, navigate]);
 

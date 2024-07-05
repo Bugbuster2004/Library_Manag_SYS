@@ -6,14 +6,14 @@ import { Link } from "react-router-dom";
 function Viewbooks() {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(true);
-  const [token, setToken] = useState(localStorage.getItem("token")); // Store retrieved token in state
+  const [token, setToken] = useState(localStorage.getItem("token")); 
 
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        console.log("Fetched token:", token); // Log retrieved token for debugging
+        console.log("Fetched token:", token);
 
-        if (token) { // Check if token exists before using it
+        if (token) { 
           const res = await axios.get("http://localhost:3000/api/getbooks", {
             headers: { Authorization: `Bearer ${token}` }
           });
@@ -21,7 +21,7 @@ function Viewbooks() {
           setData(res.data.message);
         } else {
           console.warn("No token found in localStorage. Please login to access books.");
-          // Handle the case where there's no token (e.g., redirect to login page)
+          
         }
         setLoading(false);
       } catch (error) {
@@ -30,7 +30,7 @@ function Viewbooks() {
       }
     };
     fetchBooks();
-  }, []); // Empty dependency array to run only once after mount
+  }, []); 
 
   return (
     <div style={{ height: "100%" }} className="bg-blue-black-gradient w-full h-full">
@@ -43,7 +43,7 @@ function Viewbooks() {
           ) : data ? (
             <BookSection data={data} />
           ) : (
-            <p className="text-white">No books found.</p> // Display message if data is empty
+            <p className="text-white">No books found.</p> // Display message
           )}
         </h4>
       </div>
