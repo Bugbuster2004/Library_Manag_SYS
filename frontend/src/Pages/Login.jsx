@@ -2,13 +2,24 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import env from "../assets/images/envelope.svg"
+import eye from "../assets/images/eye.svg"
+import eyeSlash from "../assets/images/eye-slash.svg"
+
 function Login() {
     //   const[Name , setName] = useState("");
       const[email , setemail] = useState("");
       const[password , setpassword] = useState("");
+      const[visible, setvisible] =useState(false);
+    
+      const handleIconClick = () =>{
+          setvisible(!visible);
+      }
+
 const navigate  = useNavigate()
     //   const [RegistrationError, setRegistrationError] = useState(null);
 
+  
       const handleSubmit = async (event) => {
         event.preventDefault();
         if(!email ||!password){
@@ -20,9 +31,11 @@ const navigate  = useNavigate()
         const response = await axios.post("http://localhost:3000/login",{
             email,password
         })
+        console.log(response.data.user._id);
         if (response.status= 200  ) {
             console.log((response))
             localStorage.setItem("token", response.data.auth)
+            localStorage.setItem("user", response.data.user._id)
             alert("Login Successful!");
             navigate("/")
     
@@ -56,13 +69,15 @@ const navigate  = useNavigate()
               </h1>
               <form class="space-y-4 md:space-y-6" action="#" onSubmit={handleSubmit}>
               
-                  <div>
+                  <div className=" relative">
                       <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
                       <input type="email" onChange={(e)=>{setemail(e.target.value)}} name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required=""/>
+                      <img className=" absolute right-4 top-10 cursor-pointer size-5"  src={env} alt="" />
                   </div>
-                  <div>
-                      <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                      <input type="password" onChange={(e)=>{setpassword(e.target.value)}} name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""/>
+                  <div className=" relative">
+                      <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password </label>
+                      <input type={visible ? "text" : "password"} onChange={(e)=>{setpassword(e.target.value)}} name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required=""/>
+                      <img className=" absolute right-4 top-10 cursor-pointer size-5" src={visible ? eyeSlash : eye}  alt="" onClick={handleIconClick} />
                   </div>
                   
                   <div class="flex items-start">

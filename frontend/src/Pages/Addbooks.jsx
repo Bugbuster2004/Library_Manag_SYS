@@ -3,6 +3,8 @@ import axios from "axios";
 
 function Addbooks() {
   const[Data,setData] =useState({title:"",author:"",genre:"",imageUrl:"",price:"",description:""})
+  const userId = localStorage.getItem("user"); // Assuming userId is stored in localStorage
+
   const change = (e) =>{
     const {name, value} = e.target;
     setData({ ...Data, [name]: value});
@@ -10,7 +12,9 @@ function Addbooks() {
   const submit  = async(e) =>{
     e.preventDefault();
     const token = localStorage.getItem("token")
-    await axios.post("http://localhost:3000/api/addbooks", Data,{
+    const bookData = { ...Data, userId }; // Add userId to the book data
+
+    await axios.post("http://localhost:3000/api/addbooks", bookData,{
       headers: { Authorization: `Bearer ${token}`
       
     },

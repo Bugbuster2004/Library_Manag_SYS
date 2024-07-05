@@ -20,7 +20,7 @@ function BookSection({ data, setData }) {
                 return;
             }
     
-            console.log(`Token: from delete ${token}`); // Debugging line
+            console.log(`Token: from delete ${token}`); 
     
             const response = await axios.delete(`http://localhost:3000/api/deletebook/${bookId}`, {
                 headers: { Authorization: `Bearer ${token}`

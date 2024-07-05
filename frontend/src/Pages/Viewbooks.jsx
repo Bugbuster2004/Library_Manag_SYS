@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import BookSection from "../components/BookSection";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 function Viewbooks() {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(localStorage.getItem("token")); 
+  const [user, setUser] =  useState(localStorage.getItem("user")); 
 
   useEffect(() => {
     const fetchBooks = async () => {
       try {
+        // console.log("Fetched token:", token);
         console.log("Fetched token:", token);
+        console.log("Fetched user ID:", user);
 
-        if (token) { 
-          const res = await axios.get("http://localhost:3000/api/getbooks", {
+        if (token && user) { 
+          const res = await axios.get(`http://localhost:3000/api/getbooks/${user}`, {
             headers: { Authorization: `Bearer ${token}` }
           });
           console.log("Fetched data:", res.data.message);
@@ -30,10 +33,10 @@ function Viewbooks() {
       }
     };
     fetchBooks();
-  }, []); 
+  }, [token , user]); 
 
   return (
-    <div style={{ height: "100%" }} className="bg-blue-black-gradient w-full h-full">
+    <div style={{ height: "100vh" }} className="bg-blue-black-gradient w-full h-full">
       <div>
         <h4>
           {loading ? (
