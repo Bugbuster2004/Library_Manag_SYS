@@ -5,6 +5,7 @@ import Navbar from './components/Navbar'
 import Addbooks from "./Pages/Addbooks"
 import Login from './Pages/Login'
 import Register from './Pages/Register'
+import Update from './Pages/Update'
 import Viewbooks from "./Pages/Viewbooks"
 
 import {
@@ -23,6 +24,7 @@ function App() {
        <Route  path='/viewbooks' element={<Viewbooks/>}></Route>
        <Route  path='/login' element={<Login/>}></Route>
        <Route  path='/register' element={<Register/>}></Route>
+       <Route  path='/update' element={<Update/>}></Route>
     </Routes>
    </Router>
   )

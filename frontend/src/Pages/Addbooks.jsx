@@ -9,14 +9,21 @@ function Addbooks() {
   }
   const submit  = async(e) =>{
     e.preventDefault();
-    await axios.post("http://localhost:3000/api/addbooks", Data).then((res)=> alert(res.data.message))
+    const token = localStorage.getItem("token")
+    await axios.post("http://localhost:3000/api/addbooks", Data,{
+      headers: { Authorization: `Bearer ${token}`
+      
+    },
+
+    }).then((res)=> alert(res.data.message))
+    
     setData({
       title:"",author:"",genre:"",imageUrl:"",price:"",description:""
     })
   }
   console.log(Data)
   return (
-    <div style={{height:"100vh"}} className="bg-blue-black-gradient h-screen flex items-center justify-center h-full">
+    <div style={{height:"100vh"}} className="bg-blue-black-gradient h-screen flex items-center justify-center ">
       <div className="max-w-sm mx-auto rounded-lg shadow-md p-4 bg-white dark:bg-gray-800 w-full  ">
         <h2 className="text-center text-xl font-medium mb-5 text-white">Book Details</h2>
         <form className=" ">
