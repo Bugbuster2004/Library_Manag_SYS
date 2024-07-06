@@ -9,6 +9,7 @@ const del = require("./routes/deletebook");
 const jwt = require("jsonwebtoken")
 const jwtkey = "lms"
 const EmployeeModel = require("./models/Employeemodel");
+// const Employee = require("./models/Employeemodel")
 const cors = require("cors")
 app.use(cors())
 app.use(express.json());
@@ -80,9 +81,25 @@ app.post("/register", async (req, res) => {
       .json({ error: "Failed to create user", message: error.message });
   }
 });
-app.get("/dashboard", verifytoken, (req, res) => {
-  res.json({ message: "Welcome to the dashboard!" });
+
+//this is the get user route
+app.get("/user/:userId", verifytoken, async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const user = await EmployeeModel.findOne({ _id: userId });
+    if (user) {
+      return res.status(200).json({ user });
+    } else {
+      return res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch user", message: error.message });
+  }
 });
+
+// app.get("/dashboard", verifytoken, (req, res) => {
+//   res.json({ message: "Welcome to the dashboard!" });
+// });
 
 function verifytoken(req, res, next) {
   let token = req.headers["authorization"];
