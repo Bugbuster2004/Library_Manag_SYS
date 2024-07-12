@@ -23,7 +23,7 @@ const navigate  = useNavigate()
       const handleSubmit = async (event) => {
         event.preventDefault();
         if(!email ||!password){
-            alert("Fields Empty")
+            alert("Fields are  Empty")
             return;
         }
     
@@ -33,6 +33,7 @@ const navigate  = useNavigate()
         })
         console.log(response.data.user._id);
         if (response.status= 200  ) {
+//the functionality is working fine the token is also getting logged remember to remove this log before deploying for security reasons leaving it as it is right now for integration
             console.log((response))
             localStorage.setItem("token", response.data.auth)
             localStorage.setItem("user", response.data.user._id)
